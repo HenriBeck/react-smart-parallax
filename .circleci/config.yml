@@ -8,8 +8,8 @@ jobs:
       steps:
         - checkout
         -run:
-          name: Install greenkeeper-lockfile
-          command: yarn global add greenkeeper-lockfile@1
+            name: Install greenkeeper-lockfile
+            command: yarn global add greenkeeper-lockfile@1
         - run:
             name: Install Packages
             command: yarn install
