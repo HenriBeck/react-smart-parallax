@@ -1,0 +1,82 @@
+{
+  "name": "react-smart-parallax",
+  "version": "0.0.0",
+  "description": "A smart parallax which will calculate the speed based on the overflow of the image",
+  "main": "lib/index.js",
+  "repository": "https://github.com/HenriBeck/react-smart-parallax.git",
+  "author": "Henri Beck <henribeck.dev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint src/ --ext js,jsx",
+    "lint:fix": "yarn run lint -- --fix",
+    "test": "NODE_ENV=\"test\" ava",
+    "test:watch": "yarn run test -- --watch",
+    "test:coverage": "nyc yarn run test",
+    "build": "babel src --out-dir lib --ignore *.spec.js",
+    "generate-report:html": "nyc report --reporter=html",
+    "generate-report:lcov": "nyc report --reporter=text-lcov",
+    "report-coverage": "yarn run generate-report:lcov | coveralls",
+    "prepublish": "yarn run build",
+    "precommit": "yarn run lint"
+  },
+  "devDependencies": {
+    "ava": "0.21.0",
+    "babel-cli": "6.24.1",
+    "babel-eslint": "7.2.3",
+    "babel-preset-env": "1.6.0",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-register": "6.24.1",
+    "browser-env": "2.0.31",
+    "enzyme": "2.9.1",
+    "eslint": "4.3.0",
+    "eslint-config-airbnb": "15.1.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-react": "7.1.0",
+    "husky": "0.14.3",
+    "nyc": "^11.1.0",
+    "react-dom": "15.6.1",
+    "react-test-renderer": "15.6.1",
+    "sinon": "2.4.1"
+  },
+  "dependencies": {
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-get-not-declared-props": "^0.2.0",
+    "react-jss": "7.0.2",
+    "warning": "3.0.0"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js",
+      "src/*.spec.js"
+    ],
+    "require": [
+      "babel-register",
+      "babel-polyfill",
+      "./tests/helpers/browser-env.js",
+      "./tests/helpers/react.js"
+    ],
+    "babel": {
+      "babelrc": true
+    },
+    "concurrency": 5
+  },
+  "nyc": {
+    "check-coverage": true,
+    "extension": [
+      ".jsx"
+    ],
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/*.spec.js",
+      "tests/**/*"
+    ],
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "report-dir": "./.coverage"
+  }
+}
