@@ -77,3 +77,20 @@ test('should initially set the transform when the image loads', (t) => {
 
   t.deepEqual(wrapper.find('.parallax--image').node.style.transform, 'translate3D(0, 0px, 0)');
 });
+
+test('should not change the transform when the parallax isn\'t visible', (t) => {
+  window.innerHeight = -100;
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  let callCount = 0;
+
+  instance.image.style = { set transform(val) { callCount += 1; } };
+
+  instance.handleImageLoad();
+
+  instance.positionImage();
+
+  t.deepEqual(callCount, 0);
+
+  window.innerHeight = 0;
+});
