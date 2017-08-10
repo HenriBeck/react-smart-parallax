@@ -8,8 +8,14 @@ jobs:
       steps:
         - checkout
         - run:
+            name: Install greenkeeper-lockfile
+            command: sudo yarn global add greenkeeper-lockfile@1
+        - run:
             name: Install Packages
             command: yarn install
+        - run:
+           name: Update lockfile
+           command: greenkeeper-lockfile-update
         - run:
             name: Lint
             command: yarn run lint
@@ -19,6 +25,9 @@ jobs:
         - run:
             name: Report Coverage
             command: yarn run report-coverage
+        - run:
+            name: Upload lockfile
+            command: greenkeeper-lockfile-upload
   test-node8:
       working_directory: ~/materialize-react
       docker:

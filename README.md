@@ -1,4 +1,6 @@
 # react-smart-parallax
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/HenriBeck/react-smart-parallax.svg)](https://greenkeeper.io/)
 A smart parallax which will measure the overflow and calculate the correct scroll speed for the image
 
 [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)](Maintained) [![npm](https://img.shields.io/npm/v/react-smart-parallax.svg)](NPM Version) [![npm](https://img.shields.io/npm/l/react-smart-parallax.svg)](License) [![David](https://img.shields.io/david/HenriBeck/react-smart-parallax.svg)](Dependencies)
