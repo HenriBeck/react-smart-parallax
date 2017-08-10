@@ -27,18 +27,18 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.24.1",
-    "browser-env": "2.0.31",
+    "browser-env": "3.1.0",
     "enzyme": "2.9.1",
-    "eslint": "4.3.0",
+    "eslint": "4.4.1",
     "eslint-config-airbnb": "15.1.0",
     "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-jsx-a11y": "5.1.1",
-    "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-react": "7.2.0",
     "husky": "0.14.3",
     "nyc": "^11.1.0",
     "react-dom": "15.6.1",
     "react-test-renderer": "15.6.1",
-    "sinon": "2.4.1"
+    "sinon": "3.1.0"
   },
   "dependencies": {
     "prop-types": "15.5.10",
