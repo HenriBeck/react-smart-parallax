@@ -56,8 +56,31 @@ export class Parallax extends PureComponent {
    * Add the event listener for when the user scrolls.
    */
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize);
+
+    this.observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      if (entry.intersectionRatio === 1 && !this.isIntersecting) {
+        window.addEventListener('scroll', this.handleScroll);
+
+        this.isIntersecting = true;
+      }
+
+      if (this.isIntersecting && entry.intersectionRatio !== 1) {
+        window.removeEventListener('scroll', this.handleScroll);
+
+        this.isIntersecting = false;
+      }
+
+      this.positionImage();
+    }, { threshold: 1 });
+
+    this.observer.observe(this.root);
   }
 
   /**
@@ -74,11 +97,14 @@ export class Parallax extends PureComponent {
    * Remove the event listener again.
    */
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('scroll', this.handleScroll);
+
+    this.observer.disconnect();
   }
 
   imageIsLoaded = false;
+  isIntersecting = false;
 
   /**
    * Compute some static values which don't change when the user scrolls.
@@ -102,19 +128,12 @@ export class Parallax extends PureComponent {
       return;
     }
 
-    const {
-      top,
-      bottom,
-    } = this.root.getBoundingClientRect();
+    const { top } = this.root.getBoundingClientRect();
     const { innerHeight } = window;
+    const scrollPos = 1 - Math.abs((innerHeight - this.rootHeight - top) / this.pixelsToScroll);
+    const transform = scrollPos * this.overflowImageHeight;
 
-    // Check if the parallax is completely visible
-    if (top >= 0 && bottom <= innerHeight) {
-      const scrollPos = 1 - Math.abs((innerHeight - this.rootHeight - top) / this.pixelsToScroll);
-      const transform = scrollPos * this.overflowImageHeight;
-
-      this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
-    }
+    this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
   }
 
   /**
