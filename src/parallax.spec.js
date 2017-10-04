@@ -3,7 +3,10 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
-import { mount } from 'enzyme';
+import {
+  mount,
+  shallow,
+} from 'enzyme';
 
 import ParallaxWrapper, { Parallax } from './parallax';
 
@@ -16,6 +19,24 @@ const defaultProps = {
   img: 'img',
 };
 
+class IntersectionObserver {
+  constructor(callback) {
+    this.callbacks.push(callback);
+  }
+
+  callbacks = [];
+
+  observe() {
+    return this;
+  }
+
+  disconnect() {
+    return this;
+  }
+}
+
+global.IntersectionObserver = IntersectionObserver;
+
 test('should render a div with an img and a div inside', (t) => {
   const wrapper = mount(<ParallaxWrapper img="image" />);
 
@@ -24,73 +45,113 @@ test('should render a div with an img and a div inside', (t) => {
   t.deepEqual(wrapper.find('.parallax--content').length, 1);
 });
 
-test('should warn against changing the img prop', (t) => {
-  const wrapper = mount(<ParallaxWrapper img="img" />);
-
-  t.throws(() => wrapper.setProps({ img: 'img2' }));
-});
-
-test('should add two event listeners to the document when the component mounts', (t) => {
+test('should add a resize event listener to the window on mount', (t) => {
   const spy = sinon.spy(window, 'addEventListener');
 
-  mount(<ParallaxWrapper img="img" />);
+  shallow(<Parallax {...defaultProps} />);
 
-  t.deepEqual(spy.callCount, 2);
+  t.deepEqual(spy.callCount, 1);
+
+  window.addEventListener.restore();
 });
 
-test('should remove two event listeners from the document when the component unmounts', (t) => {
-  const wrapper = mount(<ParallaxWrapper img="img" />);
+test('should remove the resize and scroll event listener when the component unmounts', (t) => {
   const spy = sinon.spy(window, 'removeEventListener');
+  const wrapper = shallow(<Parallax {...defaultProps} />);
 
   wrapper.unmount();
 
   t.deepEqual(spy.callCount, 2);
+
+  window.removeEventListener.restore();
 });
 
-test('should call the positionImage function when the user scrolls', (t) => {
-  const wrapper = mount(<Parallax {...defaultProps} />);
-  const instance = wrapper.instance();
-  const spy = sinon.spy(instance, 'positionImage');
+test('should warn against changing the img prop', (t) => {
+  const wrapper = shallow(<Parallax {...defaultProps} />);
 
-  instance.handleScroll();
-
-  t.deepEqual(spy.callCount, 1);
+  t.throws(() => wrapper.setProps({ img: 'img2' }));
 });
 
-test('should call the positionImage and computeValues function when the window resizes', (t) => {
+test('should compute the static values when the image loads and position the image', (t) => {
   const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
-  const positionImage = sinon.spy(instance, 'positionImage');
   const computeValues = sinon.spy(instance, 'computeValues');
+  const positionImage = sinon.spy(instance, 'positionImage');
+
+  instance.handleImageLoad();
+
+  t.deepEqual(computeValues.callCount, 1);
+  t.deepEqual(positionImage.callCount, 1);
+});
+
+test('should recalculate the static values and position the image on resize', (t) => {
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  const computeValues = sinon.spy(instance, 'computeValues');
+  const positionImage = sinon.spy(instance, 'positionImage');
 
   instance.handleResize();
 
-  t.deepEqual(positionImage.callCount, 1);
   t.deepEqual(computeValues.callCount, 1);
+  t.deepEqual(positionImage.callCount, 1);
 });
 
-test('should initially set the transform when the image loads', (t) => {
+test('should reposition position the image when the user scrolls', (t) => {
   const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
+  const positionImage = sinon.spy(instance, 'positionImage');
 
-  instance.handleImageLoad();
+  instance.handleScroll();
 
-  t.deepEqual(wrapper.find('.parallax--image').node.style.transform, 'translate3D(0, 0px, 0)');
+  t.deepEqual(positionImage.callCount, 1);
 });
 
-test('should not change the transform when the parallax isn\'t visible', (t) => {
-  window.innerHeight = -100;
+test('should add a onScroll event listener when the image is fully visible', (t) => {
   const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
-  let callCount = 0;
+  const spy = sinon.spy(window, 'addEventListener');
 
-  instance.image.style = { set transform(val) { callCount += 1; } };
+  instance.handleIntersection([{
+    isIntersecting: true,
+    intersectionRatio: 1,
+  }]);
 
-  instance.handleImageLoad();
+  t.deepEqual(spy.callCount, 1);
+  t.deepEqual(instance.isIntersecting, true);
 
-  instance.positionImage();
+  window.addEventListener.restore();
+});
 
-  t.deepEqual(callCount, 0);
+test('should remove the onScroll event listener when the image is not visible anymore', (t) => {
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  const spy = sinon.spy(window, 'removeEventListener');
 
-  window.innerHeight = 0;
+  instance.handleIntersection([{
+    isIntersecting: true,
+    intersectionRatio: 1,
+  }]);
+
+  instance.handleIntersection([{
+    isIntersecting: true,
+    intersectionRatio: 0.5,
+  }]);
+
+  t.deepEqual(spy.callCount, 1);
+  t.deepEqual(instance.isIntersecting, false);
+
+  window.removeEventListener.restore();
+});
+
+test('should not do anything if the intersection is called but the image is not intersecting', (t) => {
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  const prevIsIntersecting = instance.isIntersecting;
+
+  instance.handleIntersection([{
+    isIntersecting: false,
+    intersectionRatio: 1,
+  }]);
+
+  t.deepEqual(instance.isIntersecting, prevIsIntersecting);
 });
