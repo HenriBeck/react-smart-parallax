@@ -58,27 +58,7 @@ export class Parallax extends PureComponent {
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
 
-    this.observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-
-      if (!entry.isIntersecting) {
-        return;
-      }
-
-      if (entry.intersectionRatio === 1 && !this.isIntersecting) {
-        window.addEventListener('scroll', this.handleScroll);
-
-        this.isIntersecting = true;
-      }
-
-      if (this.isIntersecting && entry.intersectionRatio !== 1) {
-        window.removeEventListener('scroll', this.handleScroll);
-
-        this.isIntersecting = false;
-      }
-
-      this.positionImage();
-    }, { threshold: 1 });
+    this.observer = new IntersectionObserver(this.handleIntersection, { threshold: 1 });
 
     this.observer.observe(this.root);
   }
@@ -135,6 +115,28 @@ export class Parallax extends PureComponent {
 
     this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
   }
+
+  handleIntersection = (entries) => {
+    const entry = entries[0];
+
+    if (!entry.isIntersecting) {
+      return;
+    }
+
+    if (entry.intersectionRatio === 1 && !this.isIntersecting) {
+      window.addEventListener('scroll', this.handleScroll);
+
+      this.isIntersecting = true;
+    }
+
+    if (this.isIntersecting && entry.intersectionRatio !== 1) {
+      window.removeEventListener('scroll', this.handleScroll);
+
+      this.isIntersecting = false;
+    }
+
+    this.positionImage();
+  };
 
   /**
    * Recompute the static values and reposition the image.
