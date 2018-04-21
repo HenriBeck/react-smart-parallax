@@ -3,7 +3,6 @@
 import React, { type Node } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
-import getNotDeclaredProps from 'react-get-not-declared-props';
 import EventListener from 'react-event-listener';
 
 import styles from './styles';
@@ -155,7 +154,6 @@ export class Parallax extends React.PureComponent<Props, State> {
           role="presentation"
           className={`${this.props.classes.container} ${this.props.className}`}
           ref={this.container}
-          {...getNotDeclaredProps(this.props, Parallax)}
         >
           <img
             width="100%"
