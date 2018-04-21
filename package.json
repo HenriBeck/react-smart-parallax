@@ -8,70 +8,65 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src/ --ext js,jsx",
-    "lint:fix": "yarn run lint -- --fix",
-    "test": "NODE_ENV=\"test\" ava",
-    "test:watch": "yarn run test -- --watch",
-    "test:coverage": "nyc yarn run test",
-    "build": "babel src --out-dir lib --ignore *.spec.js",
+    "flow": "flow check src/",
+    "test": "ava --no-cache",
+    "test:coverage": "nyc yarn test",
+    "prebuild": "rimraf lib/",
+    "build": "babel src -d lib --ignore *.spec.js",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "report-coverage": "yarn run generate-report:lcov | coveralls",
-    "prepublish": "yarn run build",
+    "prepare": "yarn run build",
     "precommit": "yarn run lint"
   },
   "devDependencies": {
-    "ava": "0.22.0",
-    "babel-cli": "6.26.0",
-    "babel-eslint": "8.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-export-extensions": "6.22.0",
-    "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "babel-preset-env": "1.6.0",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-2": "6.24.1",
-    "babel-register": "6.26.0",
-    "browser-env": "3.2.1",
-    "coveralls": "3.0.0",
-    "enzyme": "3.1.0",
-    "enzyme-adapter-react-16": "1.0.1",
-    "eslint": "4.8.0",
-    "eslint-config-airbnb": "16.0.0",
-    "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-jsx-a11y": "5.1.1",
-    "eslint-plugin-react": "7.4.0",
+    "@babel/cli": "7.0.0-beta.42",
+    "@babel/core": "7.0.0-beta.42",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.42",
+    "@babel/preset-env": "7.0.0-beta.42",
+    "@babel/preset-flow": "7.0.0-beta.42",
+    "@babel/preset-react": "7.0.0-beta.42",
+    "@babel/register": "7.0.0-beta.42",
+    "ava": "1.0.0-beta.3",
+    "babel-eslint": "8.2.2",
+    "browser-env": "3.2.5",
+    "enzyme": "3.3.0",
+    "enzyme-adapter-react-16": "1.1.1",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-config-henribeck": "4.19.1",
+    "eslint-plugin-import": "2.10.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "7.7.0",
+    "flow-bin": "0.70.0",
     "husky": "0.14.3",
-    "nyc": "11.2.1",
+    "nyc": "11.6.0",
     "raf": "3.4.0",
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
-    "react-jss": "7.2.0",
-    "react-test-renderer": "16.0.0",
-    "sinon": "4.0.1"
+    "react": "16.3.0",
+    "react-dom": "16.3.0",
+    "react-test-renderer": "16.3.0",
+    "rimraf": "2.6.2",
+    "sinon": "4.5.0"
   },
   "dependencies": {
-    "prop-types": "15.6.0",
-    "react-get-not-declared-props": "0.2.0",
-    "warning": "3.0.0"
+    "prop-types": "^15.6.0",
+    "react-event-listener": "^0.5.0",
+    "react-get-not-declared-props": "1.0.0",
+    "react-jss": "^8.0.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-jss": "^7.0.0"
+    "react": "^16.3.0"
   },
   "ava": {
     "files": [
-      "src/**/*.spec.js",
       "src/*.spec.js"
     ],
     "require": [
       "raf/polyfill",
-      "babel-register",
-      "babel-polyfill",
+      "@babel/register",
       "./tests/helpers/browser-env.js",
       "./tests/helpers/react.js"
     ],
-    "babel": {
-      "babelrc": true
-    },
     "concurrency": 5
   },
   "nyc": {
