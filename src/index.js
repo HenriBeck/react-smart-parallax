@@ -71,16 +71,18 @@ export class Parallax extends React.PureComponent<Props, State> {
    * @private
    */
   computeValues() {
-    if (!this.imageIsLoaded || !this.container.current || !this.image.current) {
+    if (!this.imageIsLoaded) {
       return;
     }
 
-    const containerRect = this.container.current.getBoundingClientRect();
-    const imageRect = this.image.current.getBoundingClientRect();
+    const imageHeight = this.image.current ? this.image.current.getBoundingClientRect().height : 0;
+    const containerHeight = this.container.current
+      ? this.container.current.getBoundingClientRect().height
+      : 0;
 
-    this.overflowImageHeight = imageRect.height - containerRect.height;
-    this.containerMiddle = containerRect.height / 2;
-    this.pixelsToScroll = window.innerHeight - containerRect.height;
+    this.overflowImageHeight = imageHeight - containerHeight;
+    this.containerMiddle = containerHeight / 2;
+    this.pixelsToScroll = window.innerHeight - containerHeight;
   }
 
   /**
