@@ -3,6 +3,6 @@ module.exports = {
     'henribeck',
     'henribeck/client',
     'henribeck/flow',
-    'henribeck/client',
+    'henribeck/react',
   ],
 };

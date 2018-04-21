@@ -25,7 +25,7 @@ type State = { transform: string | null };
  * @class
  * @extends React.PureComponent
  */
-export class Parallax extends React.PureComponent<Props, State> {
+class Parallax extends React.PureComponent<Props, State> {
   static propTypes = {
     classes: PropTypes.shape({
       container: PropTypes.string.isRequired,
@@ -147,6 +147,7 @@ export class Parallax extends React.PureComponent<Props, State> {
   render() {
     return (
       <EventListener
+        target="window"
         onResize={this.handleResize}
         onScroll={this.handleScroll}
       >
