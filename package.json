@@ -11,10 +11,10 @@
     "flow": "flow check src/",
     "test": "ava --no-cache",
     "test:coverage": "nyc yarn test",
-    "prebuild": "rimraf lib/",
-    "build": "babel src -d lib --ignore *.spec.js",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
+    "prebuild": "rimraf lib/",
+    "build": "babel src -d lib --ignore *.spec.js",
     "prepare": "yarn run build"
   },
   "devDependencies": {
@@ -64,18 +64,14 @@
     "concurrency": 5
   },
   "nyc": {
-    "check-coverage": true,
     "extension": [
       ".jsx"
     ],
     "exclude": [
+      ".babelrc.js",
       "src/*.spec.js",
-      "tests/**/*"
+      "tests/*"
     ],
-    "lines": 100,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
     "report-dir": "./.coverage"
   }
 }
