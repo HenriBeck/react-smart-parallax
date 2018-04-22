@@ -17,7 +17,7 @@ type Props = {
   children: Node,
   className: string,
 };
-type State = { transform: string | null };
+type State = { transform: number };
 
 /**
  * A component to render a parallax effect.
@@ -42,7 +42,7 @@ class Parallax extends React.PureComponent<Props, State> {
     className: '',
   };
 
-  state = { transform: null };
+  state = { transform: 0 };
 
   container = React.createRef();
 
@@ -55,14 +55,6 @@ class Parallax extends React.PureComponent<Props, State> {
   containerMiddle: number;
 
   pixelsToScroll: number;
-
-  handleScroll = {
-    handler: () => this.positionImage(),
-    options: {
-      passive: true,
-      capture: false,
-    },
-  };
 
   /**
    * Compute some static values which don't change when the user scrolls.
@@ -93,14 +85,12 @@ class Parallax extends React.PureComponent<Props, State> {
    */
   computeTransform(containerRect: ClientRect) {
     if (containerRect.top < 0) {
-      return 'translate3D(0, 0px, 0)';
+      return 0;
     } else if (containerRect.bottom > window.innerHeight) {
-      return `translate3D(0, ${-this.overflowImageHeight}px, 0)`;
+      return -this.overflowImageHeight;
     }
 
-    const transform = (containerRect.top / this.pixelsToScroll) * -this.overflowImageHeight;
-
-    return `translate3D(0, ${transform}px, 0)`;
+    return (containerRect.top / this.pixelsToScroll) * -this.overflowImageHeight;
   }
 
   /**
@@ -121,6 +111,14 @@ class Parallax extends React.PureComponent<Props, State> {
       return transform === state.transform ? null : { transform };
     });
   }
+
+  handleScroll = {
+    handler: () => this.positionImage(),
+    options: {
+      passive: true,
+      capture: false,
+    },
+  };
 
   /**
    * Recompute the static values and reposition the image when the browser resizes.
@@ -162,7 +160,7 @@ class Parallax extends React.PureComponent<Props, State> {
             className={this.props.classes.image}
             alt="parallax"
             ref={this.image}
-            style={{ transform: this.state.transform }}
+            style={{ transform: `translate3D(0, ${this.state.transform}px, 0)` }}
             onLoad={this.handleImageLoad}
           />
 
