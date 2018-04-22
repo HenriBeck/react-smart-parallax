@@ -1,6 +1,6 @@
 {
   "name": "react-smart-parallax",
-  "version": "2.0.0",
+  "version": "5.0.0",
   "description": "A smart parallax which will calculate the speed based on the overflow of the image",
   "main": "lib/index.js",
   "repository": "https://github.com/HenriBeck/react-smart-parallax.git",
