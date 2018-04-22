@@ -1,35 +1,8 @@
 version: 2
 
 jobs:
-  test-node6:
-      working_directory: ~/materialize-react
-      docker:
-        - image: circleci/node:6
-      steps:
-        - checkout
-        - run:
-            name: Install greenkeeper-lockfile
-            command: sudo yarn global add greenkeeper-lockfile@1
-        - run:
-            name: Install Packages
-            command: yarn install
-        - run:
-           name: Update lockfile
-           command: greenkeeper-lockfile-update
-        - run:
-            name: Lint
-            command: yarn run lint
-        - run:
-            name: Run Tests & Check Coverage
-            command: yarn run test:coverage
-        - run:
-            name: Report Coverage
-            command: yarn run report-coverage
-        - run:
-            name: Upload lockfile
-            command: greenkeeper-lockfile-upload
-  test-node8:
-      working_directory: ~/materialize-react
+  lint:
+      working_directory: ~/react-smart-parallax
       docker:
         - image: circleci/node:8
       steps:
@@ -40,14 +13,51 @@ jobs:
         - run:
             name: Lint
             command: yarn run lint
+
+  flow:
+      working_directory: ~/react-smart-parallax
+      docker:
+        - image: circleci/node:8
+      steps:
+        - checkout
+        - run:
+            name: Install Packages
+            command: yarn install
+        - run:
+            name: Flow
+            command: yarn run flow
+  test:
+      working_directory: ~/react-smart-parallax
+      docker:
+        - image: circleci/node:8
+      steps:
+        - checkout
+        - run:
+            name: Install Packages
+            command: yarn install
         - run:
             name: Run Tests & Check Coverage
             command: yarn run test:coverage
 
+  build:
+      working_directory: ~/react-smart-parallax
+      docker:
+        - image: circleci/node:8
+      steps:
+        - checkout
+        - run:
+            name: Install Packages
+            command: yarn install
+        - run:
+            name: Build package
+            command: yarn run build
+
 workflows:
   version: 2
 
-  test_and_deploy:
+  build:
     jobs:
-      - test-node6
-      - test-node8
+      - lint
+      - flow
+      - test
+      - build
