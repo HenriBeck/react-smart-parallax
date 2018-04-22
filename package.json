@@ -7,87 +7,71 @@
   "author": "Henri Beck <henribeck.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint src/ --ext js,jsx",
-    "lint:fix": "yarn run lint -- --fix",
-    "test": "NODE_ENV=\"test\" ava",
-    "test:watch": "yarn run test -- --watch",
-    "test:coverage": "nyc yarn run test",
-    "build": "babel src --out-dir lib --ignore *.spec.js",
+    "lint": "eslint src/ tests/ --ext js,jsx",
+    "flow": "flow check src/",
+    "test": "ava --no-cache",
+    "test:coverage": "nyc yarn test",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
-    "report-coverage": "yarn run generate-report:lcov | coveralls",
-    "prepublish": "yarn run build",
-    "precommit": "yarn run lint"
+    "prebuild": "rimraf lib/",
+    "build": "babel src -d lib --ignore *.spec.js",
+    "prepare": "yarn run build"
   },
   "devDependencies": {
-    "ava": "0.25.0",
-    "babel-cli": "6.26.0",
-    "babel-eslint": "8.2.3",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-export-extensions": "6.22.0",
-    "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "babel-preset-env": "1.6.1",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-2": "6.24.1",
-    "babel-register": "6.26.0",
+    "@babel/cli": "7.0.0-beta.44",
+    "@babel/core": "7.0.0-beta.44",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.44",
+    "@babel/preset-env": "7.0.0-beta.44",
+    "@babel/preset-flow": "7.0.0-beta.44",
+    "@babel/preset-react": "7.0.0-beta.44",
+    "@babel/register": "7.0.0-beta.44",
+    "ava": "1.0.0-beta.3",
     "browser-env": "3.2.5",
-    "coveralls": "3.0.0",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
-    "eslint-config-airbnb": "16.1.0",
-    "eslint-plugin-import": "2.11.0",
-    "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.7.0",
-    "husky": "0.14.3",
+    "eslint-config-henribeck": "4.19.3",
+    "flow-bin": "0.70.0",
     "nyc": "11.7.1",
+    "prop-types": "15.6.1",
     "raf": "3.4.0",
     "react": "16.3.2",
     "react-dom": "16.3.2",
     "react-jss": "8.4.0",
     "react-test-renderer": "16.3.2",
+    "rimraf": "2.6.2",
     "sinon": "4.5.0"
   },
   "dependencies": {
-    "prop-types": "15.6.1",
-    "react-get-not-declared-props": "1.0.0",
-    "warning": "3.0.0"
+    "react-event-listener": "^0.5.0",
+    "react-get-not-declared-props": "1.0.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-jss": "^7.0.0"
+    "prop-types": "^15.6.0",
+    "react": "^16.3.0",
+    "react-jss": "^8.0.0"
   },
   "ava": {
     "files": [
-      "src/**/*.spec.js",
       "src/*.spec.js"
     ],
     "require": [
       "raf/polyfill",
-      "babel-register",
-      "babel-polyfill",
-      "./tests/helpers/browser-env.js",
-      "./tests/helpers/react.js"
+      "@babel/register",
+      "./tests/browser-env.js",
+      "./tests/enzyme.js"
     ],
-    "babel": {
-      "babelrc": true
-    },
     "concurrency": 5
   },
   "nyc": {
-    "check-coverage": true,
     "extension": [
       ".jsx"
     ],
     "exclude": [
-      "src/**/*.spec.js",
+      ".babelrc.js",
       "src/*.spec.js",
-      "tests/**/*"
+      "tests/*"
     ],
-    "lines": 100,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
     "report-dir": "./.coverage"
   }
 }
