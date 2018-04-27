@@ -1,12 +1,6 @@
 // @flow
 
-type Styles = {
-  container: {},
-  image: {},
-  content: {},
-};
-
-const styles: Styles = {
+export default {
   container: {
     composes: 'parallax',
     position: 'relative',
@@ -30,5 +24,3 @@ const styles: Styles = {
     zIndex: 1,
   },
 };
-
-export default styles;
