@@ -8,11 +8,7 @@ import EventListener from 'react-event-listener';
 import styles from './styles';
 
 type Props = {
-  classes: {
-    container: string,
-    image: string,
-    content: string,
-  },
+  classes: { [keys: $Keys<typeof styles>]: string },
   img: string,
   children: Node,
   className: string,
