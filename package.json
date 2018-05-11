@@ -32,7 +32,7 @@
     "eslint": "4.19.1",
     "eslint-config-henribeck": "4.19.4",
     "flow-bin": "0.71.0",
-    "nyc": "11.7.1",
+    "nyc": "11.7.3",
     "prop-types": "15.6.1",
     "raf": "3.4.0",
     "react": "16.3.2",
