@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import PropTypes from 'prop-types';
@@ -10,8 +10,8 @@ import styles from './styles';
 type Props = {
   classes: { [keys: $Keys<typeof styles>]: string },
   img: string,
-  children: Node,
-  className: string,
+  children: Node, // eslint-disable-line react/require-default-props
+  className: string, // eslint-disable-line react/require-default-props
 };
 type State = { transform: number };
 
