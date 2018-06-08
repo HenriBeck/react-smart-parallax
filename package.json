@@ -40,7 +40,7 @@
     "react-jss": "8.4.0",
     "react-test-renderer": "16.4.0",
     "rimraf": "2.6.2",
-    "sinon": "5.1.0"
+    "sinon": "5.1.1"
   },
   "dependencies": {
     "react-event-listener": "^0.6.0",
