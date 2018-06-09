@@ -22,13 +22,11 @@
     "@babel/core": "7.0.0-beta.49",
     "@babel/plugin-proposal-class-properties": "7.0.0-beta.49",
     "@babel/preset-env": "7.0.0-beta.49",
-    "@babel/preset-react": "7.0.0-beta.49",
     "@babel/preset-flow": "7.0.0-beta.49",
+    "@babel/preset-react": "7.0.0-beta.49",
     "@babel/register": "7.0.0-beta.49",
     "ava": "1.0.0-beta.5.1",
     "browser-env": "3.2.5",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
     "eslint-config-henribeck": "4.19.7",
     "flow-bin": "0.74.0",
@@ -38,7 +36,7 @@
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-jss": "8.5.0",
-    "react-test-renderer": "16.4.0",
+    "react-unit": "3.0.3",
     "rimraf": "2.6.2",
     "sinon": "5.1.1"
   },
@@ -58,10 +56,8 @@
     "require": [
       "raf/polyfill",
       "@babel/register",
-      "./tests/browser-env.js",
-      "./tests/enzyme.js"
-    ],
-    "concurrency": 5
+      "./tests/browser-env.js"
+    ]
   },
   "nyc": {
     "extension": [
