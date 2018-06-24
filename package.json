@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint src/ tests/ --ext js,jsx",
     "flow": "flow check src/",
-    "test": "ava --no-cache",
+    "test": "ava",
     "test:coverage": "nyc yarn test",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
@@ -18,13 +18,13 @@
     "prepare": "yarn run build"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.49",
-    "@babel/core": "7.0.0-beta.49",
-    "@babel/plugin-proposal-class-properties": "7.0.0-beta.49",
-    "@babel/preset-env": "7.0.0-beta.49",
-    "@babel/preset-flow": "7.0.0-beta.49",
-    "@babel/preset-react": "7.0.0-beta.49",
-    "@babel/register": "7.0.0-beta.49",
+    "@babel/cli": "7.0.0-beta.51",
+    "@babel/core": "7.0.0-beta.51",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.51",
+    "@babel/preset-env": "7.0.0-beta.51",
+    "@babel/preset-flow": "7.0.0-beta.51",
+    "@babel/preset-react": "7.0.0-beta.51",
+    "@babel/register": "7.0.0-beta.51",
     "ava": "1.0.0-beta.6",
     "browser-env": "3.2.5",
     "eslint": "4.19.1",
@@ -48,16 +48,6 @@
     "prop-types": "^15.6.0",
     "react": "^16.3.0",
     "react-jss": "^8.0.0"
-  },
-  "ava": {
-    "files": [
-      "src/*.spec.js"
-    ],
-    "require": [
-      "raf/polyfill",
-      "@babel/register",
-      "./tests/browser-env.js"
-    ]
   },
   "nyc": {
     "extension": [
