@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint src/ tests/ --ext js,jsx",
     "flow": "flow check src/",
-    "test": "ava --no-cache",
+    "test": "ava",
     "test:coverage": "nyc yarn test",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
@@ -48,16 +48,6 @@
     "prop-types": "^15.6.0",
     "react": "^16.3.0",
     "react-jss": "^8.0.0"
-  },
-  "ava": {
-    "files": [
-      "src/*.spec.js"
-    ],
-    "require": [
-      "raf/polyfill",
-      "@babel/register",
-      "./tests/browser-env.js"
-    ]
   },
   "nyc": {
     "extension": [
