@@ -41,7 +41,7 @@
     "sinon": "6.1.4"
   },
   "dependencies": {
-    "react-event-listener": "^0.6.0",
+    "react-event-listener": "0.6.0",
     "react-get-not-declared-props": "1.1.0"
   },
   "peerDependencies": {
